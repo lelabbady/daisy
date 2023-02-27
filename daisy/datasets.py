@@ -137,7 +137,7 @@ def open_ds(filename, ds_name, mode='r'):
         zyx_offset = ds.voxel_offset[::-1]
         offset = Coordinate(zyx_offset)
 
-        zyx_shape = ds.volume_size[::-1]
+        zyx_shape = ds.volume_size
         shape = Coordinate(zyx_shape)
 
         roi = Roi(offset, shape)
