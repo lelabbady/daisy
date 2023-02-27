@@ -9,6 +9,7 @@ import logging
 import os
 import shutil
 import tempfile
+from cloudvolume import CloudVolume
 
 logger = logging.getLogger(__name__)
 
