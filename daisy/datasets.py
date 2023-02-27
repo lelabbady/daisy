@@ -126,6 +126,21 @@ def open_ds(filename, ds_name, mode='r'):
             adaptor.voxel_size,
             adaptor.roi.get_begin())
 
+    elif 'precomputed' in filename:
+        logger.debug("creating CV object for dataset %s", filename)
+        ds = CloudVolume(filename, cache=True, lru_bytes=0, fill_missing=True)
+        #voxel_size = ds.resolution[::-1]
+        #spec.voxel_size = Coordinate(zyx_voxel_size)
+        voxel_size = Coordinate((1, 1, 1))
+
+        zyx_offset = ds.voxel_offset[::-1]
+        offset = Coordinate(zyx_offset)
+
+        zyx_shape = ds.volume_size[::-1]
+        shape = Coordinate(zyx_shape)
+
+        roi = Roi(offset, shape)
+        return Array(ds, roi, voxel_size)
     else:
 
         logger.error("don't know data format of %s in %s", ds_name, filename)
@@ -175,6 +190,8 @@ def prepare_ds(
         file_format = 'zarr'
     elif filename.endswith('.n5'):
         file_format = 'n5'
+    elif 'precomputed' in filename:
+        file_format = 'precomputed'
     else:
         raise RuntimeError("Unknown file format for %s" % filename)
 
