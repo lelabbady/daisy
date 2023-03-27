@@ -120,8 +120,8 @@ class Array(Freezable):
                 self.data,
                 roi,
                 self.voxel_size,
-                data_roi = self.data.data_roi,
-                self.data_roi.get_begin())
+                self.data_roi.get_begin(),
+                data_roi = self.data_roi)
 
         elif isinstance(key, Coordinate):
 
