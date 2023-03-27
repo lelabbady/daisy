@@ -53,7 +53,8 @@ class Array(Freezable):
                 self.voxel_size*self.data.shape[self.n_channel_dims:])
         else:
             self.data_roi = data_roi
-
+            print('This is data roi')
+            print(data_roi)
         assert self.roi.get_begin().is_multiple_of(voxel_size), (
             "roi offset %s is not a multiple of voxel size %s" % (
                 self.roi.get_begin(), voxel_size))
@@ -213,7 +214,7 @@ class Array(Freezable):
 
         if roi is None:
             if self.precomputed ==True:
-                xyz_roi = self.roi.to_slices()[::-1]
+                xyz_roi = self.roi.to_slices()
                 print('******************************** READING CLOUVOLUME ***************************')
                 print(xyz_roi)
                 return np.squeeze(self.data[xyz_roi], axis=3).T
