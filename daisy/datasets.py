@@ -141,7 +141,7 @@ def open_ds(filename, ds_name, mode='r'):
         shape = Coordinate(zyx_shape)
 
         roi = Roi(offset, shape)
-        return Array(ds, roi, voxel_size, data_roi=roi)
+        return Array(ds, roi, voxel_size, data_roi=roi, is_precomputed=True)
     else:
 
         logger.error("don't know data format of %s in %s", ds_name, filename)

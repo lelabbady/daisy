@@ -31,13 +31,13 @@ class Array(Freezable):
             ``roi.get_begin()``, if not given.
     '''
 
-    def __init__(self, data, roi, voxel_size, data_offset=None, data_roi=None):
+    def __init__(self, data, roi, voxel_size, data_offset=None, data_roi=None, is_precomputed=False):
 
         self.data = data
         self.roi = roi
         self.voxel_size = Coordinate(voxel_size)
         self.n_channel_dims = len(data.shape) - roi.dims()
-
+        self.precomputed = is_precomputed
         assert self.voxel_size.dims() == self.roi.dims(), (
             "dimension of voxel_size (%d) does not match dimension of roi (%d)"
             % (self.voxel_size.dims(), self.roi.dims()))
@@ -121,7 +121,8 @@ class Array(Freezable):
                 roi,
                 self.voxel_size,
                 self.data_roi.get_begin(),
-                data_roi = self.data_roi)
+                data_roi = self.data_roi,
+                is_precomputed = self.precomputed)
 
         elif isinstance(key, Coordinate):
 
@@ -211,7 +212,13 @@ class Array(Freezable):
         '''
 
         if roi is None:
-            return self.data[self.__slices(self.roi)]
+            if self.precomputed ==True:
+                xyz_roi = roi.to_slices()[::-1]
+                print('******************************** READING CLOUVOLUME ***************************')
+                print(xyz_roi)
+                return np.squeeze(vol[xyz_roi], axis=3).T
+            else:
+                return self.data[self.__slices(self.roi)]
 
         if fill_value is None:
             return self[roi].to_ndarray()
