@@ -31,7 +31,7 @@ class Array(Freezable):
             ``roi.get_begin()``, if not given.
     '''
 
-    def __init__(self, data, roi, voxel_size, data_offset=None):
+    def __init__(self, data, roi, voxel_size, data_offset=None, data_roi=None):
 
         self.data = data
         self.roi = roi
@@ -47,9 +47,12 @@ class Array(Freezable):
         else:
             data_offset = Coordinate(data_offset)
 
-        self.data_roi = Roi(
-            data_offset,
-            self.voxel_size*self.data.shape[self.n_channel_dims:])
+        if data_roi is None:
+            self.data_roi = Roi(
+                data_offset,
+                self.voxel_size*self.data.shape[self.n_channel_dims:])
+        else:
+            self.data_roi = data_roi
 
         assert self.roi.get_begin().is_multiple_of(voxel_size), (
             "roi offset %s is not a multiple of voxel size %s" % (

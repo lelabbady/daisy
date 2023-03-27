@@ -137,11 +137,11 @@ def open_ds(filename, ds_name, mode='r'):
         zyx_offset = ds.voxel_offset[::-1]
         offset = Coordinate(zyx_offset)
 
-        zyx_shape = ds.volume_size
+        zyx_shape = ds.volume_size[::-1]
         shape = Coordinate(zyx_shape)
 
         roi = Roi(offset, shape)
-        return Array(ds, roi, voxel_size)
+        return Array(ds, roi, voxel_size, data_roi=roi)
     else:
 
         logger.error("don't know data format of %s in %s", ds_name, filename)
