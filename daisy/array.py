@@ -214,7 +214,7 @@ class Array(Freezable):
 
         if roi is None:
             if self.precomputed ==True:
-                xyz_roi = self.roi.to_slices()
+                xyz_roi = self.roi.to_slices()[::-1]
                 print('******************************** READING CLOUVOLUME ***************************')
                 print(xyz_roi)
                 return np.squeeze(self.data[xyz_roi], axis=3).T
